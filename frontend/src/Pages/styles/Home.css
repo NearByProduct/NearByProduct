@@ -1,0 +1,106 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    width:95vw;
+    margin:0px auto;
+    position: relative;  
+}
+
+/* Logo styling */
+.logo img {
+    max-width: 100px; /* Adjust the logo size as needed */
+    height: auto;
+}
+.secondclass{
+    display: flex;
+    position: absolute;
+    right:20px;
+    top:10px;
+}
+/* Search box styling */
+.searchbox input[type="text"] {
+    width: 100%; /* Take up all available space */
+    padding: 10px;
+    border: 5px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+/* Button styling */
+.becomeseller button {
+    padding: 10px 20px;
+    background-color: #2196F3; /* Set your desired button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.pageImage{
+    background-image: url('../../images/Ecommerce.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width:100vw;
+    height:80vh;
+}
+.pageImage {
+    background-image: url('../../images/Ecommerce.jpg'); /* Replace 'path/to/your/image.jpg' with the actual path to your background image */
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 100px 0; /* Adjust padding as needed */
+    color:red;
+}
+
+.header-title {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Main content styles */
+.main-content {
+    padding: 20px;
+}
+
+/* Paragraph styles */
+p {
+    margin:0px 2rem;
+    font-size: 18px; /* Same font size for all paragraphs */
+    line-height: 1.5; /* Adjust line height as needed */
+    margin-bottom: 20px;
+
+    font-size: 1.5rem;
+}
+.navbar2{
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 10px;
+}
+.allpages{
+    cursor: pointer;
+    color: #2196F3;
+}
+.allpages:hover{
+    color: red;
+}
+.loginimg{
+    height:5rem;
+}
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+    .logo img {
+        max-width: 80px; /* Adjust logo size for smaller screens */
+    }
+    .searchbox input[type="text"] {
+        width: 100%; /* Take up full width on smaller screens */
+    }
+    .becomeseller button {
+        margin-top: 10px; /* Add spacing between button and search box */
+    }
+}

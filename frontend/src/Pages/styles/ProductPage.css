@@ -1,0 +1,95 @@
+.product-page{
+    display: grid;
+    column-gap: 15px;
+    row-gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+    position:relative;
+    left:2rem;
+}
+.productpageHeading{
+    font-style: italic;
+    color: bisque;
+    text-align: center;
+    text-transform: capitalize;
+    background-image: linear-gradient(to right top, #051937, 
+    #004d7a, #008793, #00bf72, #a8eb12);;
+}
+.product-card{
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+.product-image>img{
+    height:20rem;
+    width:100%;
+    border-radius: 2rem;
+}
+.product-footer{
+    display: flex;
+    justify-content: space-around;
+}
+.desc-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-size: 2rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:black;
+}
+@media screen and (max-width: 1200px) {
+    .product-page {
+        grid-template-columns: 1fr 1fr;
+        left: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .product-page {
+        grid-template-columns: 1fr 1fr;
+        left: 1rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .product-page {
+        grid-template-columns: 1fr 1fr;
+        left: 0.5rem;
+    }
+    .desc-container {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .product-footer{
+        display: flex;
+        flex-direction: column;
+        font-size: 3rem;
+        align-items: center;
+
+    }
+    .product-page {
+        grid-template-columns: 1fr;
+        left: 0.25rem;
+    }
+    .desc-container {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .product-footer{
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        font-size: 3rem;
+        align-items: center;
+    }
+    .product-page {
+        left: 0.1rem;
+    }
+    .desc-container {
+        font-size: 1rem;
+    }
+}
