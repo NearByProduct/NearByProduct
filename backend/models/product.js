@@ -50,19 +50,34 @@ const product = mongoose.Schema(
           type: String,
           required: true,
         },
-        rating: {
-          type: Number,
-          required: true,
-        },
         comment: {
           type: String,
           required: true,
         },
       },
     ],
+    rating:[
+      {
+        user:{
+          type:mongoose.Schema.ObjectId,
+          ref:"User"
+        },
+        singleRating:{
+          type:Number
+        }
+      }
+    ],
+    totalRating:{
+      type:Number,
+      default:0
+    },
     category: {
       type: String,
       required: true,
+    },
+    genderSpecific:{
+      type:String,
+      default:"Neutral"
     },
     shopId: {
       type: mongoose.Schema.ObjectId,
@@ -72,5 +87,4 @@ const product = mongoose.Schema(
   { timestamps: true }
 );
 
-const ProductModel = mongoose.model("Product", product);
-module.exports = ProductModel;
+module.exports= mongoose.model("Product", product);

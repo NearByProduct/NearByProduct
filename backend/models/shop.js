@@ -12,7 +12,7 @@ const shop = new mongoose.Schema(
     },
     email: {
       type: String,
-      required:true
+      required: true,
     },
     contactNumber: {
       type: String,
@@ -48,13 +48,30 @@ const shop = new mongoose.Schema(
       type: String,
       required: true,
     },
-    category:{
-        type:String,
-        default:"General"
-    }
+    category: {
+      type: String,
+      default: "General",
+    },
+    productId: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+    ],
+    sellerTotalSellArray: {
+      type: [Number],
+      default: new Array(12).fill(0),
+    },
+    sellerTotalPaymentArray: {
+      type:  [Number],
+      default: new Array(12).fill(0),
+    },
+    sellerTotalRemainingArray: {
+      type:  [Number],
+      default: new Array(12).fill(0),
+    },
   },
   { timestamps: true }
 );
-
-const ShopModel = mongoose.model("Shop", shop);
-module.exports = ShopModel;
+module.exports = mongoose.model("Shop", shop);
