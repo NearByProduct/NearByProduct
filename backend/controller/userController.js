@@ -2,6 +2,9 @@ const customError = require("../middleware/customError");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendMail");
+const Product = require("../models/product");
+const Track = require("../models/tracking");
+
 const sendToken = async (user, statusCode, message, res) => {
   const token = user.getToken();
   console.log("hello");
@@ -66,6 +69,7 @@ module.exports.signup = async (req, res, next) => {
     next(new customError(err.message, err.statusCode || 500)); // Pass the status code if available
   }
 };
+
 module.exports.createActualUser = async (req, res, next) => {
   console.log("called Actual");
   const { activationToken } = req.body;
@@ -86,103 +90,9 @@ module.exports.createActualUser = async (req, res, next) => {
     next(new customError(err.message, 500));
   }
 };
+
 const createActivationToken = (user) => {
   return jwt.sign({ id: user }, process.env.jwtActivationSecret, {
     expiresIn: "5m",
   });
-};
-module.exports.login = async (req, res, next) => {
-  let data = req.body;
-  const { email, password } = data;
-  const user = await User.findOne({ email: email }).select("+password");
-  console.log(user);
-  if (!user) {
-    res.status(404).json({
-      success: false,
-      message: "User not found",
-    });
-  } else {
-    try {
-      console.log("1");
-      const passMatch = await user.checkPassword(password);
-      console.log("2");
-      if (!passMatch) {
-        res.status(401).json({
-          success: false,
-          message: "Unauthorized user",
-        });
-      } else {
-        sendToken(user, 201, "Login Succesful", res);
-      }
-    } catch (err) {
-      console.log("sere");
-      next(new customError(err.message, 400));
-    }
-  }
-};
-
-module.exports.getUser = async (req, res, next) => {
-  let id = req.params.id;
-
-  try {
-    const user = await User.findById(id);
-    if (user) {
-      res.status(200).json({
-        success: true,
-        message: "user found",
-        user,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "user not found",
-      });
-    }
-  } catch (err) {
-    next(new customError(err));
-  }
-};
-
-module.exports.updateUser = async (req, res, next) => {
-  const id = req.params.id;
-  const data = req.body;
-
-  try {
-    const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
-    if (updatedUser) {
-      res.status(200).json({
-        success: true,
-        message: "user updated successfully",
-        updatedUser,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "failed to update user",
-      });
-    }
-  } catch (err) {
-    next(new customError(err));
-  }
-};
-
-module.exports.deleteUser = async (req, res, next) => {
-  const id = req.params.id;
-
-  try {
-    const deletecheck = await User.findByIdAndDelete(id);
-    if (deletecheck) {
-      res.status(200).json({
-        success: true,
-        message: "user deleted successfully",
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "failed to delete user",
-      });
-    }
-  } catch (err) {
-    next(new customError(err));
-  }
 };
