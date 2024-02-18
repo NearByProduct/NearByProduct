@@ -96,3 +96,33 @@ const createActivationToken = (user) => {
     expiresIn: "5m",
   });
 };
+
+module.exports.login = async (req, res, next) => {
+  let data = req.body;
+  const { email, password } = data;
+  const user = await User.findOne({ email: email }).select("+password");
+  console.log(user);
+  if (!user) {
+    res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  } else {
+    try {
+      console.log("1");
+      const passMatch = await user.checkPassword(password);
+      console.log("2");
+      if (!passMatch) {
+        res.status(401).json({
+          success: false,
+          message: "Unauthorized user",
+        });
+      } else {
+        sendToken(user, 201, "Login Succesful", res);
+      }
+    } catch (err) {
+      console.log("sere");
+      next(new customError(err.message, 400));
+    }
+  }
+};
