@@ -171,3 +171,24 @@ module.exports.updateUser = async (req, res, next) => {
     next(new customError(err));
   }
 };
+
+module.exports.deleteUser = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const deletecheck = await User.findByIdAndDelete(id);
+    if (deletecheck) {
+      res.status(200).json({
+        success: true,
+        message: "user deleted successfully",
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "failed to delete user",
+      });
+    }
+  } catch (err) {
+    next(new customError(err));
+  }
+};
