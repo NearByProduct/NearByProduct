@@ -148,3 +148,26 @@ module.exports.getUser = async (req, res, next) => {
     next(new customError(err));
   }
 };
+
+module.exports.updateUser = async (req, res, next) => {
+  const id = req.params.id;
+  const data = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
+    if (updatedUser) {
+      res.status(200).json({
+        success: true,
+        message: "user updated successfully",
+        updatedUser,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "failed to update user",
+      });
+    }
+  } catch (err) {
+    next(new customError(err));
+  }
+};
