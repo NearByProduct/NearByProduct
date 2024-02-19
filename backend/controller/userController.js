@@ -126,3 +126,25 @@ module.exports.login = async (req, res, next) => {
     }
   }
 };
+
+module.exports.getUser = async (req, res, next) => {
+  let id = req.params.id;
+
+  try {
+    const user = await User.findById(id);
+    if (user) {
+      res.status(200).json({
+        success: true,
+        message: "user found",
+        user,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "user not found",
+      });
+    }
+  } catch (err) {
+    next(new customError(err));
+  }
+};
