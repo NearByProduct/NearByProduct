@@ -143,3 +143,34 @@ module.exports.getAllProduct = async (req, res, next) => {
     next(new customError(err.message, 404));
   }
 };
+
+module.exports.getAllOrderOfShop = async (req, res, next) => {
+  try {
+    const shopId = req.params.shopid;
+    const order = await Order.find({}) // Find all orders
+      .populate({
+        path: "orderItems.product",
+      })
+      .exec();
+    if (!order) {
+      next(new customError("No Order Is Found For this shop", 501));
+    } else {
+      const matchedProducts = order.flatMap((orders) =>
+        orders.orderItems.filter(
+          (item) => item.product.shopId.toString() === shopId
+        )
+      );
+      if (matchedProducts.length == 0) {
+        next(new customError("No orders placed currently from your shop", 400));
+      } else {
+        res.status(200).json({
+          success: true,
+          message: "All the Orders",
+          order: matchedProducts,
+        });
+      }
+    }
+  } catch (err) {
+    next(new customError(err.message, 403));
+  }
+};
