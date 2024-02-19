@@ -92,3 +92,54 @@ module.exports.updateShopInfo = async (req, res, next) => {
     next(customError(error.message, 500));
   }
 };
+
+module.exports.getAllProduct = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const queryobj = req.query;
+    console.log(queryobj);
+    const query = {};
+    const sortingObj = {};
+    if (queryobj.subcategory) {
+      query.subcategory = queryobj.subcategory;
+    }
+    if (queryobj.category) {
+      query.category = queryobj.category;
+    }
+    if (queryobj.rating) {
+      query.rating = { $gte: parseFloat(queryobj.rating) };
+    }
+    if (queryobj.from && queryobj.to) {
+      query.price = {
+        $lte: parseFloat(queryobj.to),
+        $gte: parseFloat(queryobj.from),
+      };
+    } else if (queryobj.from) {
+      query.price = { $gte: parseFloat(queryobj.from) };
+    } else if (queryobj.to) {
+      query.price = { $lte: parseFloat(queryobj.to) };
+    }
+    if (queryobj.sortOnsellingPrice) {
+      sortingObj.sellingPrice = queryobj.sortOnsellingPrice === "asc" ? 1 : -1;
+    }
+    if (queryobj.sortOnrating) {
+      sortingObj.rating = queryobj.sortOnrating === "asc" ? 1 : -1;
+    }
+    const shopId = await Shop.findById(id).populate("productId").exec();
+    const productIds = shopId.productId.map((product) => product._id);
+    //const productToReturn=await Product.find({_id:{$in:productIds},rating:req.query.rating}).sort({sellingPrice:-1});
+    const productToReturn = await Product.find({
+      _id: { $in: productIds },
+      ...query,
+    }).sort({ ...sortingObj });
+    //  console.log(shopId.productId);
+    console.log(productIds);
+    res.status(200).json({
+      success: true,
+      message: "get all Product Of Shop",
+      productToReturn: productToReturn,
+    });
+  } catch (err) {
+    next(new customError(err.message, 404));
+  }
+};
