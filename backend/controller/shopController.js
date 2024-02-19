@@ -144,6 +144,24 @@ module.exports.getAllProduct = async (req, res, next) => {
   }
 };
 
+module.exports.createOtp = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const trackId = await Track.findById(id);
+    trackId.sellerotp = otp;
+    trackId.sellerotpExpires = Date.now() + 5 * 60 * 1000;
+    await trackId.save();
+    res.status(200).json({
+      success: true,
+      message: "OTP Sent Successfully",
+      trackId: trackId,
+    });
+  } catch (err) {
+    next(new customError(err.message, 500));
+  }
+};
+
 module.exports.getAllOrderOfShop = async (req, res, next) => {
   try {
     const shopId = req.params.shopid;
