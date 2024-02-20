@@ -8,7 +8,8 @@ const {
   deleteUser,
   orders,
   cartItems,
-  removeItemFromCart
+  removeItemFromCart,
+  wishlistItems
 } = require("../controller/userController");
 const router = express.Router();
 
@@ -23,5 +24,7 @@ router.get("/getallorders/:id", orders);
 
 router.get("/cartitems/:id", cartItems);
 router.delete("/removefromcart/:user/:id", removeItemFromCart);
+
+router.get("/wishlistItems/:id", wishlistItems);
 
 module.exports = router;

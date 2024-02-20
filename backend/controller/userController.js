@@ -285,3 +285,38 @@ module.exports.removeItemFromCart = async (req, res, next) => {
   }
 };
 
+module.exports.wishlistItems = async (req, res, next) => {
+  let userId = req.params.id;
+
+  try {
+    const user = await User.findById(userId)
+      .populate({ path: "wishlist.productId" })
+      .exec();
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const wishlistItems = user.wishlist;
+    console.log(wishlistItems);
+
+    if (wishlistItems) {
+      res.status(200).json({
+        success: true,
+        wishlistItems,
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        message: "No items in wishlist",
+      });
+    }
+  } catch (err) {
+    next(new customError("Not able to fetch user wishlist items", 400));
+  }
+};
+
