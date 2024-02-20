@@ -506,3 +506,21 @@ module.exports.addComment = async (req, res, next) => {
     next(new customError(err.message, 404));
   }
 };
+
+module.exports.createOtp = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const trackId = await Track.findById(id);
+    trackId.userotp = otp;
+    trackId.userotpExpires = Date.now() + 5 * 60 * 1000;
+    await trackId.save();
+    res.status(200).json({
+      success: true,
+      message: "OTP Sent Successfully",
+      trackId: trackId,
+    });
+  } catch (err) {
+    next(new customError(err.message, 500));
+  }
+};
