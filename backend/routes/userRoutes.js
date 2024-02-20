@@ -12,7 +12,8 @@ const {
   wishlistItems,
   removeItemFromWishlist,
   addToCart,
-  addToWishlist
+  addToWishlist,
+  wishlistToCart
 } = require("../controller/userController");
 const router = express.Router();
 
@@ -33,5 +34,7 @@ router.delete("/removefromwishlist/:user/:id", removeItemFromWishlist);
 
 router.post("/cart/:user/:id", addToCart);
 router.post("/wishlist/:user/:id", addToWishlist);
+
+router.post("/wishlistToCart/:user/:id", wishlistToCart);
 
 module.exports = router;
