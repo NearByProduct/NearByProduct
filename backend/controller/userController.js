@@ -349,3 +349,34 @@ module.exports.removeItemFromWishlist = async (req, res, next) => {
     next(new customError("Not able to fetch user wishlist items", 400));
   }
 };
+
+module.exports.addToCart = async (req, res, next) => {
+  let id = req.params.id;
+  let userId = req.params.user;
+  console.log(id, userId);
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      next(new customError("User not found", 400));
+    } else {
+      const isProductInCart = user.cart.some(
+        (item) => item.productId.toString() === id
+      );
+
+      if (isProductInCart) {
+        next(new customError("Item already in cart", 400));
+      } else {
+        user.cart.push({ productId: id });
+        await user.save();
+
+        res.status(200).json({
+          success: true,
+          message: "Added to cart",
+          user,
+        });
+      }
+    }
+  } catch (err) {
+    next(new customError("product not added to cart", 400));
+  }
+};
