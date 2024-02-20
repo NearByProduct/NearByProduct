@@ -220,3 +220,38 @@ module.exports.orders = async (req, res, next) => {
   }
 };
 
+module.exports.cartItems = async (req, res, next) => {
+  let userId = req.params.id;
+
+  try {
+    const user = await User.findById(userId)
+      .populate({ path: "cart.productId" })
+      .exec();
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const cartItems = user.cart;
+    console.log(cartItems);
+
+    if (cartItems) {
+      res.status(200).json({
+        success: true,
+        cartItems,
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        message: "No items in cart",
+      });
+    }
+  } catch (err) {
+    next(new customError("Not able to fetch user cart items", 400));
+  }
+};
+
