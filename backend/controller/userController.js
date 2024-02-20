@@ -192,3 +192,31 @@ module.exports.deleteUser = async (req, res, next) => {
     next(new customError(err));
   }
 };
+
+module.exports.orders = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findById(id)
+      .populate({
+        path: "order",
+        populate: {
+          path: "orderId", // Populate the product field in orderItems
+        },
+      })
+      .exec();
+    if (!user) {
+      next(new customError("orders for this user is not found", 404))
+        .populate("order")
+        .exec();
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "All Orders Received at dashboard",
+        order: user.order,
+      });
+    }
+  } catch (err) {
+    next(new customError(err.message, 501));
+  }
+};
+
