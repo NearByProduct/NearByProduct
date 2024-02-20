@@ -255,3 +255,33 @@ module.exports.cartItems = async (req, res, next) => {
   }
 };
 
+module.exports.removeItemFromCart = async (req, res, next) => {
+  let userId = req.params.user;
+  let productId = req.params.id;
+  console.log(userId, productId);
+
+  try {
+    const user = await User.findById(userId);
+    console.log("user is", user);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    await user.updateOne({ $pull: { cart: { productId: productId } } });
+
+    const updatedUser = await User.findById(userId);
+    const cartItems = updatedUser.cart || [];
+
+    res.status(200).json({
+      success: true,
+      cartItems,
+    });
+  } catch (err) {
+    next(new customError("Not able to fetch user cart items", 400));
+  }
+};
+

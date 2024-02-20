@@ -7,7 +7,8 @@ const {
   updateUser,
   deleteUser,
   orders,
-  cartItems
+  cartItems,
+  removeItemFromCart
 } = require("../controller/userController");
 const router = express.Router();
 
@@ -21,5 +22,6 @@ router.delete("/delete/:id", deleteUser);
 router.get("/getallorders/:id", orders);
 
 router.get("/cartitems/:id", cartItems);
+router.delete("/removefromcart/:user/:id", removeItemFromCart);
 
 module.exports = router;
