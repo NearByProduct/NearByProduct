@@ -486,3 +486,23 @@ module.exports.cartToWishlist = async (req, res, next) => {
   }
 };
 
+module.exports.addComment = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    //const {userid}=req.body;
+    const product = await Product.findById(id);
+    product.reviews.unshift(req.body);
+    await product.save();
+    if (!product) {
+      next(new customError("product is not defined", 501));
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "comment successfully",
+        product: product,
+      });
+    }
+  } catch (err) {
+    next(new customError(err.message, 404));
+  }
+};
