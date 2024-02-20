@@ -320,3 +320,32 @@ module.exports.wishlistItems = async (req, res, next) => {
   }
 };
 
+module.exports.removeItemFromWishlist = async (req, res, next) => {
+  let userId = req.params.user;
+  let productId = req.params.id;
+  console.log(userId, productId);
+
+  try {
+    const user = await User.findById(userId);
+    console.log("user is", user);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    await user.updateOne({ $pull: { wishlist: { productId: productId } } });
+
+    const updatedUser = await User.findById(userId);
+    const wishlistItems = updatedUser.wishlist || [];
+
+    res.status(200).json({
+      success: true,
+      wishlistItems,
+    });
+  } catch (err) {
+    next(new customError("Not able to fetch user wishlist items", 400));
+  }
+};
