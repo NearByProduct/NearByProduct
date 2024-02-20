@@ -380,3 +380,34 @@ module.exports.addToCart = async (req, res, next) => {
     next(new customError("product not added to cart", 400));
   }
 };
+
+module.exports.addToWishlist = async (req, res, next) => {
+  let id = req.params.id;
+  let userId = req.params.user;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      next(new customError("User not found", 400));
+    } else {
+      const isProductInWishlist = user.wishlist.some(
+        (item) => item.productId.toString() === id
+      );
+
+      if (isProductInWishlist) {
+        console.log("inside");
+        next(new customError("product already in wishlist", 400));
+      } else {
+        user.wishlist.push({ productId: id });
+        await user.save();
+
+        res.status(200).json({
+          success: true,
+          message: "Added to wishlist",
+          user,
+        });
+      }
+    }
+  } catch (err) {
+    next(new customError("product not added to wishlist", 400));
+  }
+};
