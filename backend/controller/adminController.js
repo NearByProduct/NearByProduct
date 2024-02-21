@@ -1,6 +1,7 @@
 const customError = require("../middleware/customError");
 const Track = require("../models/tracking");
 const Rider = require("../models/rider");
+const Payment = require("../models/payment");
 
 module.exports.getAllProductsInProcessing = async (req, res, next) => {
   try {
@@ -70,3 +71,23 @@ module.exports.allocateOrders = async (req, res, next) => {
     next(new customError("product not allocated", 400));
   }
 };
+
+module.exports.createPayment = async (req, res, next) => {
+    let data = req.body;
+  
+    try {
+      const payment = await Payment.create(data);
+  
+      if (payment) {
+        res.status(200).json({
+          success: true,
+          message: "payment done",
+          payment,
+        });
+      } else {
+        next(new customError("payment unsuccessful", 500));
+      }
+    } catch (err) {
+      next(new customError(err.message, 500));
+    }
+  };
