@@ -28,3 +28,36 @@ module.exports.checkout = async (req, res, next) => {
     next(new customError("Not able to create order", 400));
   }
 };
+module.exports.paymentVerification = async (req, res, next) => {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+  
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+  
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
+      .update(body.toString())
+      .digest("hex");
+  
+    console.log(expectedSignature);
+  
+    if (expectedSignature === razorpay_signature) {
+      const payment = {
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+      };
+      // res.redirect(
+      //   `http://localhost:3000/paymentsuccess?reference=${razorpay_payment_id}`
+      // );
+      res.status(200).json({
+        success: true,
+        message: "payment done",
+        payment,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+      });
+    }
+  };  
