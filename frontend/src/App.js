@@ -8,6 +8,7 @@ import ProductPage from "./Pages/ProductPage/ProductPage";
 import MainSellerPage from "./Pages/SellerPages/MainSellerPage";
 import ProfilePage from "./Pages/SellerPages/Profile";
 import ProductDetails from "./Pages/ProductPage/ProductDetails";
+import OrderPage from "./Pages/PlaceOrder/PlaceOrder";
 
 const App = () => (
   <BrowserRouter>
@@ -23,6 +24,7 @@ const App = () => (
       <Route path="/mainsellerpage" element={<MainSellerPage />}></Route>
       <Route path="/profile" element={<ProfilePage />}></Route>
       <Route path="/product" element={<ProductDetails />}></Route>
+      <Route path="/placeOrder" element={<OrderPage />}></Route>
     </Routes>
   </BrowserRouter>
 );
