@@ -3,6 +3,7 @@ const Track = require("../models/tracking");
 const Rider = require("../models/rider");
 const Payment = require("../models/payment");
 const Shop = require("../models/shop");
+const Product = require("../models/product");
 
 module.exports.getAllProductsInProcessing = async (req, res, next) => {
   try {
@@ -74,57 +75,85 @@ module.exports.allocateOrders = async (req, res, next) => {
 };
 
 module.exports.createPayment = async (req, res, next) => {
-    let data = req.body;
-  
+  let data = req.body;
+
+  try {
+    const payment = await Payment.create(data);
+
+    if (payment) {
+      res.status(200).json({
+        success: true,
+        message: "payment done",
+        payment,
+      });
+    } else {
+      next(new customError("payment unsuccessful", 500));
+    }
+  } catch (err) {
+    next(new customError(err.message, 500));
+  }
+};
+
+module.exports.paySeller = async (req, res, next) => {
+  let shopId = req.body.shopId;
+  let priceToBePaid = req.body.price;
+  let moneyWithAdmin = req.body.adminMoney;
+  if (moneyWithAdmin < priceToBePaid) {
+    next(new customError("money is not sufficient", 400));
+  } else {
     try {
-      const payment = await Payment.create(data);
-  
-      if (payment) {
-        res.status(200).json({
-          success: true,
-          message: "payment done",
-          payment,
-        });
-      } else {
-        next(new customError("payment unsuccessful", 500));
+      const shop = await Shop.findById(shopId);
+
+      for (let i = 0; i < shop.sellerTotalRemainingArray.length; i++) {
+        if (shop.sellerTotalRemainingArray[i] === 0) continue;
+        if (shop.sellerTotalRemainingArray[i] <= priceToBePaid) {
+          shop.sellerTotalPaymentArray[i] += shop.sellerTotalRemainingArray[i];
+          priceToBePaid -= shop.sellerTotalPaymentArray[i];
+          shop.sellerTotalRemainingArray[i] =
+            shop.sellerTotalSellArray[i] - shop.sellerTotalPaymentArray[i];
+        } else if (priceToBePaid > 0) {
+          shop.sellerTotalPaymentArray[i] += priceToBePaid;
+          priceToBePaid = 0;
+          shop.sellerTotalRemainingArray[i] =
+            shop.sellerTotalSellArray[i] - shop.sellerTotalPaymentArray[i];
+        } else {
+          break;
+        }
       }
     } catch (err) {
-      next(new customError(err.message, 500));
+      next(new customError(err.message, 400));
     }
-  };
+  }
+};
 
-  module.exports.paySeller = async (req, res, next) => {
-    let shopId = req.body.shopId;
-    let priceToBePaid = req.body.price;
-    let moneyWithAdmin = req.body.adminMoney;
-    if (moneyWithAdmin < priceToBePaid) {
-      next(new customError("money is not sufficient", 400));
-    } else {
-      try {
-        const shop = await Shop.findById(shopId);
-  
-        for (let i = 0; i < shop.sellerTotalRemainingArray.length; i++) {
-          if (shop.sellerTotalRemainingArray[i] === 0) continue;
-          if (shop.sellerTotalRemainingArray[i] <= priceToBePaid) {
-  
-            shop.sellerTotalPaymentArray[i] += shop.sellerTotalRemainingArray[i];
-            priceToBePaid -= shop.sellerTotalPaymentArray[i];
-            shop.sellerTotalRemainingArray[i] =
-              shop.sellerTotalSellArray[i] - shop.sellerTotalPaymentArray[i];
-  
-          } else if (priceToBePaid > 0) {
-  
-            shop.sellerTotalPaymentArray[i] += priceToBePaid;
-            priceToBePaid = 0;
-            shop.sellerTotalRemainingArray[i] =
-              shop.sellerTotalSellArray[i] - shop.sellerTotalPaymentArray[i];
-              
-          } else {
-            break;
-          }
+module.exports.payRider = async (req, res, next) => {
+  let riderId = req.body.riderId;
+  let priceToBePaid = req.body.price;
+  let moneyWithAdmin = req.body.adminMoney;
+  if (moneyWithAdmin < priceToBePaid) {
+    next(new customError("money is not sufficient", 400));
+  } else {
+    try {
+      const rider = await Rider.findById(riderId);
+
+      for (let i = 0; i < rider.riderTotalRemainingArray.length; i++) {
+        if (rider.riderTotalRemainingArray[i] === 0) continue;
+        if (rider.riderTotalRemainingArray[i] <= priceToBePaid) {
+          rider.riderTotalPaymentArray[i] += rider.riderTotalRemainingArray[i];
+          priceToBePaid -= rider.riderTotalPaymentArray[i];
+          rider.riderTotalRemainingArray[i] =
+            rider.riderTotalWageArray[i] - rider.riderTotalPaymentArray[i];
+        } else if (priceToBePaid > 0) {
+          rider.riderTotalPaymentArray[i] += priceToBePaid;
+          priceToBePaid = 0;
+          rider.riderTotalRemainingArray[i] =
+            rider.riderTotalWageArray[i] - rider.riderTotalPaymentArray[i];
+        } else {
+          break;
         }
-      } catch (err) {
-        next(new customError(err.message, 400));
       }
+    } catch (err) {
+      next(new customError(err.message, 400));
     }
-  };
+  }
+};
