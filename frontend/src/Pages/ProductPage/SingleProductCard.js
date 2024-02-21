@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const SingleProductCard = ({ product }) => {
+    const [open,setOpen]=useState(false);
     return (
         <div className="product-card">
             <div className="product-image">
@@ -17,6 +18,7 @@ const SingleProductCard = ({ product }) => {
                     <span>Stock: {product.stock}</span>
                 </div>
             </div>
+            <div>Open </div>
         </div>
     );
 };

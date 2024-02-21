@@ -2,11 +2,14 @@ import axios from 'axios';
 import React, { Fragment, useEffect, useState } from 'react';
 import SingleProductCard from './SingleProductCard';
 import "../styles/ProductPage.css";
+import { useSelector } from 'react-redux';
 
 const ProductPage = () => {
     const [products, setProducts] = useState([]);
     const[loading,setLoading]=useState(true);
-
+    const data=useSelector((state)=>state.userreducer);
+    console.log("hii");
+    console.log("user is ",data);
     const fetchData = async () => {
         try {
             const response = await axios.get("https://dummyjson.com/products");

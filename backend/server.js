@@ -40,6 +40,4 @@ connectDb();
 const server = app.listen(process.env.PORT, () => {
   console.log("server is running on port " + process.env.PORT);
 });
-
-console.log(server);
 module.exports = app;
