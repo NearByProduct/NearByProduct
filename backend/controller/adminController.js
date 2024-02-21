@@ -2,6 +2,7 @@ const customError = require("../middleware/customError");
 const Track = require("../models/tracking");
 const Rider = require("../models/rider");
 const Payment = require("../models/payment");
+const Shop = require("../models/shop");
 
 module.exports.getAllProductsInProcessing = async (req, res, next) => {
   try {
@@ -89,5 +90,41 @@ module.exports.createPayment = async (req, res, next) => {
       }
     } catch (err) {
       next(new customError(err.message, 500));
+    }
+  };
+
+  module.exports.paySeller = async (req, res, next) => {
+    let shopId = req.body.shopId;
+    let priceToBePaid = req.body.price;
+    let moneyWithAdmin = req.body.adminMoney;
+    if (moneyWithAdmin < priceToBePaid) {
+      next(new customError("money is not sufficient", 400));
+    } else {
+      try {
+        const shop = await Shop.findById(shopId);
+  
+        for (let i = 0; i < shop.sellerTotalRemainingArray.length; i++) {
+          if (shop.sellerTotalRemainingArray[i] === 0) continue;
+          if (shop.sellerTotalRemainingArray[i] <= priceToBePaid) {
+  
+            shop.sellerTotalPaymentArray[i] += shop.sellerTotalRemainingArray[i];
+            priceToBePaid -= shop.sellerTotalPaymentArray[i];
+            shop.sellerTotalRemainingArray[i] =
+              shop.sellerTotalSellArray[i] - shop.sellerTotalPaymentArray[i];
+  
+          } else if (priceToBePaid > 0) {
+  
+            shop.sellerTotalPaymentArray[i] += priceToBePaid;
+            priceToBePaid = 0;
+            shop.sellerTotalRemainingArray[i] =
+              shop.sellerTotalSellArray[i] - shop.sellerTotalPaymentArray[i];
+              
+          } else {
+            break;
+          }
+        }
+      } catch (err) {
+        next(new customError(err.message, 400));
+      }
     }
   };
