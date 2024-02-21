@@ -1,0 +1,138 @@
+.header {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  /* .paymentData {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .payment-options {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .payment-options div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .payment-options input {
+    width: 20px; 
+    height: 20px; 
+    margin-right: 10px;
+  }
+  
+  .card-details {
+    margin-top: 10px;
+    display: flex;
+  }
+  
+  .card-details-top{
+      display: flex;
+      justify-content: space-around;
+  } */
+  
+  .container {
+    background-color: beige;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .process {
+    display: flex;
+  }
+  
+  .lines {
+    width: 110px;
+    top: 15px;
+    height: 3px;
+    background-color: rgb(248, 145, 163);
+    position: relative;
+  }
+  
+  .order-process-btn {
+    background-color: rgb(248, 145, 163);
+    width: auto;
+    border-radius: 25px;
+  }
+  
+  .container2 {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .payment-options div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .payment-options input {
+      width: 20px; /* Adjust the size as needed */
+      height: 20px; /* Adjust the size as needed */
+      margin-right: 10px;
+    }
+    
+    .card-details {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card-details div {
+      margin-bottom: 10px;
+    }
+    
+    .card-details label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    .card-details input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .total {
+      flex: 1;
+      margin-left: 20px;
+    }
+    
+    .order-summary {
+      border: 1px solid #ccc;
+      padding: 15px;
+    }
+    
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .total {
+      margin-top: 20px;
+    }
+    
+    .next {
+      margin-top: 20px;
+    }
+  
+  
+  

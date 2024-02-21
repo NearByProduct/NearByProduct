@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .next-btn {
+    background-color: #f9f9f9;
+    color: rgb(254, 141, 160);
+    border: 1px solid rgb(254, 141, 160);
+  }
+  
+  .next-btn:hover {
+    background-color: white;
+  }
+  
+  .container2 {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  .payment-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Add this line */
+  }
+  
+  .payment-options > div {
+    flex: 1;
+    margin-right: 10px; /* Adjust margin as needed */
+  }
+  
+  .paymentData {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    margin-right: 20px;
+    background-color: white;
+    height: 450px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .total {
+    flex: 1;
+  }
+  
+  .order-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-summary h2 {
+    text-align: center;
+  }
+  
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .summary-item.total {
+    font-weight: bold;
+  }
+  
+  .input-result {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-details,
+  .paypal-details,
+  .cod-details {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  
+  .card-details-top,
+  .paypal-details,
+  .cod-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .card-details input,
+  .paypal-details input,
+  .cod-details input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .paypal-details,
+  .cod-details {
+    margin-top: 10px;
+  }
+  
+  .submit-payment-btn {
+    background-color: rgb(230, 70, 70);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    width: auto;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .submit-payment-btn:hover {
+    background-color: rgb(200, 60, 60);
+  }
+  
+  
