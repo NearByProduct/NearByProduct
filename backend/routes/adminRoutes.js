@@ -4,7 +4,7 @@ const {
   allocateOrders,
   createPayment,
   paySeller,
-  payRider
+  payRider,
 } = require("../controller/adminController");
 const router = express.Router();
 
