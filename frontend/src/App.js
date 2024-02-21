@@ -7,7 +7,6 @@ import ActivateAccount from "./Pages/ActivateAccount";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 import MainSellerPage from "./Pages/SellerPages/MainSellerPage";
 import ProfilePage from "./Pages/SellerPages/Profile";
-
 const App = () => (
  
     <BrowserRouter>
