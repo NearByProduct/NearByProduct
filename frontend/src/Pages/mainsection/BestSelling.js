@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const BestSelling = () => {
-  return (
-    <div>BestSelling</div>
-  )
-}
+  return <div>BestSelling</div>;
+};
 
-export default BestSelling
+export default BestSelling;

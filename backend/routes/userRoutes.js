@@ -16,13 +16,16 @@ const {
   wishlistToCart,
   cartToWishlist,
   addComment,
-  createOtp
+  createOtp,
+  logout
 } = require("../controller/userController");
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/activation", createActualUser);
 router.post("/login", login);
+router.post("/logout",logout);
+
 router.get("/get/:id", getUser);
 router.put("/update/:id", updateUser);
 router.delete("/delete/:id", deleteUser);
