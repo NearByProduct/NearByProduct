@@ -127,6 +127,22 @@ module.exports.login = async (req, res, next) => {
   }
 };
 
+module.exports.logout = async (req, res, next) => {
+  try {
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "cookie deleted",
+    });
+  } catch (err) {
+    next(new customError("unable to logout", 500));
+  }
+};
+
 module.exports.getUser = async (req, res, next) => {
   let id = req.params.id;
 
