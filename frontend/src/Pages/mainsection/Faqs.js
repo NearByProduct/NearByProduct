@@ -53,5 +53,4 @@ const Faq = ({ data }) => {
     </div>
   );
 }
-
 export default Faqs;
